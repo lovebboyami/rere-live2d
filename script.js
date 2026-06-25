@@ -10,6 +10,7 @@
         });
 
         document.getElementById('galleryModal').classList.add('active');
+        document.querySelector('.modal-content').scrollTop=0;
         document.body.style.overflow='hidden';
     }
     
@@ -136,5 +137,3 @@
     
     // 초기 계산 실행
     calc();
-
-    window.parent.postMessage({height:document.body.scrollHeight}, '*');
