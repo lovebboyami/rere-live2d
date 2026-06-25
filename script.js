@@ -11,13 +11,11 @@
 
         document.getElementById('galleryModal').classList.add('active');
         document.querySelector('.modal-content').scrollTop=0;
-        document.body.style.overflow='hidden';
     }
     
-    function closeGallery() {
-        document.getElementById('galleryModal').classList.remove('active');
-        document.body.style.overflow = '';
-    }
+        function closeGallery() {
+            document.getElementById('galleryModal').classList.remove('active');
+        }
     
     // 리깅 작가 선택 토글
     function toggleRigging(card) {
