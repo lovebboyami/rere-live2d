@@ -10,7 +10,6 @@
         });
 
         document.getElementById('galleryModal').classList.add('active');
-        document.querySelector('.modal-content').scrollTop=0;
         document.body.style.overflow='hidden';
     }
     
