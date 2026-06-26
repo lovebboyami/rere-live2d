@@ -120,42 +120,45 @@
     // 초기 계산 실행
     calc();
 
-// ==================== 아트머그 iframe 전용 이미지 뷰어 스크립트 ====================\n
 function openViewer(element) {
-    const imageString = element.getAttribute('data-images');
-    if (!imageString) return;
-    const images = imageString.split(',');
 
-    const viewer = document.getElementById('artmugViewer');
-    const content = document.getElementById('artmugViewerContent');
+    const oldViewer = document.querySelector('.inline-viewer');
 
-    // 기존 이미지 비우기
-    content.innerHTML = '';
+    if(oldViewer){
+        const oldCard = oldViewer.dataset.cardIndex;
+        const nowCard = [...element.closest('.gallery-grid').querySelectorAll('.card')].indexOf(element.closest('.card'));
 
-    // 이미지 태그 동적 생성
-    images.forEach(src => {
-        const img = document.createElement('img');
-        img.src = src.trim();
-        content.appendChild(img);
+        if(oldCard == nowCard){
+            oldViewer.remove();
+            return;
+        }
+
+        oldViewer.remove();
+    }
+
+    const images = element.dataset.images.split(',');
+
+    const viewer = document.createElement('div');
+    viewer.className = 'inline-viewer';
+    viewer.dataset.cardIndex = [...element.closest('.gallery-grid').querySelectorAll('.card')].indexOf(element.closest('.card'));
+
+    const close = document.createElement('button');
+    close.className = 'inline-close';
+    close.innerHTML = '×';
+    close.onclick = () => viewer.remove();
+
+    viewer.appendChild(close);
+
+    images.forEach(src=>{
+        const img=document.createElement('img');
+        img.src=src.trim();
+        viewer.appendChild(img);
     });
 
-    // [핵심] 현재 사용자가 머물고 있는 스크롤 높이를 측정합니다.
-    const currentScrollY = window.scrollY || window.pageYOffset;
-
-    // 뷰어의 시작 위치(top)를 현재 스크롤 위치로 지정합니다.
-    viewer.style.top = currentScrollY + 'px';
-
-    // 뷰어 열기
-    viewer.style.display = 'block';
-
-    // 이미지 내부 스크롤 초기화
-    content.scrollTop = 0;
-}
-
-function closeViewer() {
-    const viewer = document.getElementById('artmugViewer');
-    viewer.style.display = 'none';
-
-    // 본문 페이지 스크롤 잠금 해제
-    document.body.classList.remove('viewer-open');
+    const grid = element.closest('.gallery-grid');
+    const cards = [...grid.querySelectorAll('.card')];
+    const index = cards.indexOf(element.closest('.card'));
+    const column = window.innerWidth <= 768 ? 1 : 3;
+    const insertTarget = cards[Math.min(index - (index % column) + (column - 1), cards.length - 1)];
+    insertTarget.after(viewer);
 }

@@ -180,6 +180,11 @@
     th, td { border: 1px solid var(--border); padding: 10px; text-align: center; }
     th { background: #fff; }
 
+    .inline-viewer{grid-column:1/-1;position:relative;background:#fff;padding:30px;display:flex;flex-direction:column;align-items:center;gap:25px;border-radius:16px;border:1px solid var(--border);}
+    .inline-viewer img{width:auto;max-width:95%;height:auto;display:block;}
+    .inline-close{position:sticky;top:20px;align-self:flex-end;width:45px;height:45px;border-radius:50%;background:#000;color:#fff;border:0;font-size:26px;z-index:10;cursor:pointer;margin-bottom:-45px;}
+
+
     /* 모바일 반응형 */
     @media (max-width: 768px) {
         .profile-info h1{font-size:22px;}
@@ -222,76 +227,6 @@
         table{font-size:13px;table-layout:fixed;width:100%;}
         th,td{padding:8px;word-break:break-all;}
         
+
     }
 
-/* ==================== 아트머그 iframe 이미지 뷰어 최종 통합 스타일 ==================== */
-
-/* 뷰어가 켜졌을 때 메인 화면 스크롤 잠금 */
-body.viewer-open {
-    overflow: hidden !important;
-}
-
-/* 뷰어 전체 배경화면 */
-.am-viewer {
-    display: none;
-    position: absolute; /* fixed에서 absolute로 변경 */
-    left: 0;
-    width: 100%;
-    height: 100vh; /* 화면 한 칸 크기만큼만 채우기 */
-    background: rgba(255, 255, 255, 0.7);
-    z-index: 999999;
-}
-
-/* 이미지들이 세로로 나열되고 스크롤되는 내부 영역 */
-.am-viewer-content {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto; /* 이미지 내용이 길어지면 내부에서 상하 스크롤 */
-    padding: 80px 20px; /* X버튼과 겹치지 않게 상단 여백 확보 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    box-sizing: border-box;
-}
-
-/* 뷰어 내부 이미지 스타일 */
-.am-viewer-content img {
-    max-width: 95%;
-    height: auto;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* 우측 상단 X 버튼 */
-.am-viewer-close {
-    position: absolute; /* fixed에서 absolute로 변경 */
-    top: 20px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-    min-height: 50px;
-    background: #000000;
-    color: #ffffff;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    font-size: 28px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    z-index: 1000000;
-    box-sizing: border-box;
-    padding: 0;
-    line-height: 1;
-}
-
-/* X 버튼에 마우스 올렸을 때 효과 */
-.am-viewer-close:hover {
-    background: #000000;
-    color: #ffffff;
-    transform: scale(1.05);
-}
