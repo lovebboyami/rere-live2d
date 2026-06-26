@@ -36,7 +36,6 @@
 
     .container {width:100%;max-width:1200px;margin:0 auto;padding:40px 20px;}
     .page{width:100%;min-height:100%;}
-    html,body{width:100%;min-height:100%;overflow-x:hidden;}
 
     /* 공통 스타일 */
     h2 { font-size: 24px; font-weight: 700; margin-bottom: 20px; color: var(--text); padding-bottom: 10px; border-bottom: 2px solid var(--border); }
@@ -99,18 +98,10 @@
     
     .card-info { padding:15px; text-align:center; background:#fff; } 
     .card.sold .card-thumb::after{content:'판매 완료';position:absolute;inset:0;background:rgba(0,0,0,0.3);color:#fff;display:flex;justify-content:center;align-items:center;font-size:28px;font-weight:700;z-index:2;pointer-events:none;}
-    .card-info h4 { font-size:21px; margin-bottom:12px; } 
-
-    
-    .creator-tags { display:flex; justify-content:center; flex-wrap:wrap; gap:6px; margin-bottom:15px; } 
-    .creator-tag { display:inline-block; padding:5px 12px; background:var(--point-light); color:var(--point); border:1px solid var(--point-light); border-radius:999px; font-size:13px; font-weight:600; }
-    .creator-tag.art{background:#ffe8ec;color:#e64980;}
-    .creator-tag.rig{background:#f1f3f5;color:#868e96;}
-    
-    .model-price { font-size:24px; font-weight:700; color:var(--point); margin:15px 0; text-align:center; }
+        
     .model-simple{display:flex;justify-content:space-between;align-items:center;width:100%;}
     .model-name{font-size:21px;font-weight:700;}
-    .model-price{margin:0;text-align:right;font-size:24px;color:#444444;}
+    .model-price{margin:0;text-align:right;font-size:24px;color:#444444; font-weight:700;}
 
     .model-notice{display:block;width:100%;padding:12px;background:#f8f9fa;color:#868e96;border-radius:var(--radius-sm);font-size:14px;font-weight:600;text-align:center;margin-top:12px;}
     .model-status{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;margin-top:15px;font-size:14px;text-align:left;}
@@ -118,19 +109,13 @@
     .status-on{background:var(--point-light);color:var(--point);border-color:var(--point);}
     .status-off{background:#f8f9fa;color:#868e96;}
     
-    .card-info p { font-size: 14px; color: var(--text-light); margin-bottom: 10px; }
+    
     .yt-btn{display:block;width:100%;padding:12px;border:1px solid var(--border);background:#fff;color:var(--text);text-decoration:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;margin-top:12px;transition:.2s;}
     .yt-btn:hover{background:#f8f9fa;}
     .client-name { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px; border-radius: var(--radius-sm); font-size: 13px; pointer-events: none; }
 
-    .creator-info { font-size:14px; color:var(--text-light); line-height:1.8; }
+    
 
-.modal-gallery{display:none;position:fixed;inset:0;background:rgba(255,255,255,.82);z-index:9999;justify-content:center;align-items:flex-start;}
-.modal-gallery.active{display:flex;}
-.modal-content{position:relative;width:100%;height:100%;overflow:auto;padding-top:20px;}
-#galleryImageList{display:flex;flex-direction:column;gap:20px;align-items:center;}
-#galleryImageList img{display:block;width:auto;max-width:95vw;height:auto;}
-.modal-close{position:fixed;top:20px;right:20px;width:44px;height:44px;display:flex;justify-content:center;align-items:center;color:#fff;background:rgba(0,0,0,.6);border-radius:50%;font-size:28px;cursor:pointer;z-index:99999;}
     
     /* 단가 및 옵션 선택 */
     /* 리깅 협업 작가 (상단 3열) */
@@ -236,5 +221,69 @@
 
         table{font-size:13px;table-layout:fixed;width:100%;}
         th,td{padding:8px;word-break:break-all;}
+        
     }
 
+/* ==================== 아트머그 iframe 전용 이미지 뷰어 스타일 ==================== */
+.am-viewer {
+    display: none; /* 기본적으로는 숨김 */
+    position: absolute; /* iframe 환경에서 최상단 고정이 아닌 현재 위치 고정을 위한 절대 좌표 */
+    left: 0;
+    width: 100%;
+    height: 100vh; /* 뷰어 자체의 높이를 브라우저 화면 높이로 고정 */
+    background-color: rgba(255, 255, 255, 0.7); /* 어두운 배경 투명도 */
+    z-index: 99999; /* 다른 요소보다 무조건 위에 뜸 */
+}
+
+/* 이미지들이 세로로 스크롤되는 영역 */
+.am-viewer-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto; /* 이미지 내용이 길어지면 내부에서 상하 스크롤 발생 */
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+/* 뷰어 내부 이미지 스타일 */
+.am-viewer-content img {
+    max-width: 95%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+/* 화면 우측 상단에 항상 고정되는 용이한 X 버튼 */
+.am-viewer-close {
+    position: fixed; /* 브라우저 화면 기준 고정 */
+    top: 20px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.2);
+    color: #000000;
+    border: 2px solid #000000;
+    border-radius: 50%;
+    font-size: 32px;
+    line-height: 44px;
+    cursor: pointer;
+    z-index: 100000; /* 이미지보다 위에 떠 있도록 설정 */
+    transition: background 0.2s, transform 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.am-viewer-close:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+/* 뷰어가 켜졌을 때 메인 본문 페이지가 멋대로 스크롤되는 것을 방지 */
+body.viewer-open {
+    overflow: hidden !important;
+}
