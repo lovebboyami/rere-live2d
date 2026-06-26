@@ -164,3 +164,8 @@ function closeViewer() {
     // 2. [조건 4 만족] 본문 잠금을 해제하여 의뢰인이 보던 상세페이지 위치를 그대로 유지시킵니다.
     document.body.classList.remove('viewer-open');
 }
+
+// script.txt 맨 아래 추가하면 좋은 코드 (아트머그 iframe에게 내 키가 얼마인지 알려주는 기능)
+window.addEventListener('load', function() {
+    window.parent.postMessage({ type: 'resize-iframe', height: document.body.scrollHeight }, '*');
+});
