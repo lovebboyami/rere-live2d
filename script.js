@@ -120,10 +120,8 @@
     // 초기 계산 실행
     calc();
 
-// ==================== 아트머그 iframe 전용 이미지 뷰어 스크립트 ====================
-
+// ==================== 아트머그 iframe 전용 이미지 뷰어 스크립트 ====================\n
 function openViewer(element) {
-    // 1. 해당 썸네일에 지정된 이미지 문자열(data-images)을 가져와서 배열로 쪼갭니다.
     const imageString = element.getAttribute('data-images');
     if (!imageString) return;
     const images = imageString.split(',');
@@ -131,41 +129,33 @@ function openViewer(element) {
     const viewer = document.getElementById('artmugViewer');
     const content = document.getElementById('artmugViewerContent');
 
-    // 2. 기존에 뷰어에 들어있던 이미지 잔상들을 깔끔하게 지웁니다.
+    // 기존 이미지 비우기
     content.innerHTML = '';
 
-    // 3. 배열에 들어있는 이미지들을 차례대로 <img> 태그로 만들어서 넣어줍니다.
+    // 이미지 태그 동적 생성
     images.forEach(src => {
         const img = document.createElement('img');
-        img.src = src.trim(); // 공백 제거
+        img.src = src.trim();
         content.appendChild(img);
     });
 
-    // 4. [아트머그 핵심 해결] 현재 부모/현재 창의 스크롤 위치(Y축)를 계산합니다.
-    const currentScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+    // [핵심] 현재 사용자가 머물고 있는 스크롤 높이를 측정합니다.
+    const currentScrollY = window.scrollY || window.pageYOffset;
 
-    // 5. 뷰어의 시작 탑(top) 위치를 사용자가 보던 화면 위치로 딱 맞춰 띄웁니다.
+    // 뷰어의 시작 위치(top)를 현재 스크롤 위치로 지정합니다.
     viewer.style.top = currentScrollY + 'px';
+
+    // 뷰어 열기
     viewer.style.display = 'block';
 
-    // 6. [조건 5 만족] 이전에 발가락을 봤더라도 새 뷰어를 열 때는 무조건 스크롤을 맨 위(정수리)로 초기화합니다.
+    // 이미지 내부 스크롤 초기화
     content.scrollTop = 0;
-
-    // 7. 본문 스크롤을 잠가서 상세페이지 위치가 고정되도록 만듭니다.
-    document.body.classList.add('viewer-open');
 }
 
 function closeViewer() {
     const viewer = document.getElementById('artmugViewer');
-    
-    // 1. 뷰어 창을 화면에서 숨깁니다.
     viewer.style.display = 'none';
 
-    // 2. [조건 4 만족] 본문 잠금을 해제하여 의뢰인이 보던 상세페이지 위치를 그대로 유지시킵니다.
+    // 본문 페이지 스크롤 잠금 해제
     document.body.classList.remove('viewer-open');
 }
-
-// script.txt 맨 아래 추가하면 좋은 코드 (아트머그 iframe에게 내 키가 얼마인지 알려주는 기능)
-window.addEventListener('load', function() {
-    window.parent.postMessage({ type: 'resize-iframe', height: document.body.scrollHeight }, '*');
-});

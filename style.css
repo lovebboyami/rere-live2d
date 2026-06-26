@@ -224,27 +224,34 @@
         
     }
 
-/* ==================== 아트머그 iframe 전용 이미지 뷰어 스타일 ==================== */
-.am-viewer {
-    display: none; /* 기본적으로는 숨김 */
-    position: absolute; /* iframe 환경에서 최상단 고정이 아닌 현재 위치 고정을 위한 절대 좌표 */
-    left: 0;
-    width: 100%;
-    height: 100vh; /* 뷰어 자체의 높이를 브라우저 화면 높이로 고정 */
-    background-color: rgba(255, 255, 255, 0.7); /* 어두운 배경 투명도 */
-    z-index: 99999; /* 다른 요소보다 무조건 위에 뜸 */
+/* ==================== 아트머그 iframe 이미지 뷰어 최종 통합 스타일 ==================== */
+
+/* 뷰어가 켜졌을 때 메인 화면 스크롤 잠금 */
+body.viewer-open {
+    overflow: hidden !important;
 }
 
-/* 이미지들이 세로로 스크롤되는 영역 */
+/* 뷰어 전체 배경화면 */
+.am-viewer {
+    display: none;
+    position: absolute; /* fixed에서 absolute로 변경 */
+    left: 0;
+    width: 100%;
+    height: 100vh; /* 화면 한 칸 크기만큼만 채우기 */
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 999999;
+}
+
+/* 이미지들이 세로로 나열되고 스크롤되는 내부 영역 */
 .am-viewer-content {
     width: 100%;
     height: 100%;
-    overflow-y: auto; /* 이미지 내용이 길어지면 내부에서 상하 스크롤 발생 */
-    padding: 60px 20px;
+    overflow-y: auto; /* 이미지 내용이 길어지면 내부에서 상하 스크롤 */
+    padding: 80px 20px; /* X버튼과 겹치지 않게 상단 여백 확보 */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 25px;
     box-sizing: border-box;
 }
 
@@ -254,36 +261,37 @@
     height: auto;
     object-fit: contain;
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* 화면 우측 상단에 항상 고정되는 용이한 X 버튼 */
+/* 우측 상단 X 버튼 */
 .am-viewer-close {
-    position: fixed; /* 브라우저 화면 기준 고정 */
+    position: absolute; /* fixed에서 absolute로 변경 */
     top: 20px;
     right: 30px;
     width: 50px;
     height: 50px;
-    background: rgba(0, 0, 0, 0.2);
-    color: #000000;
-    border: 2px solid #000000;
+    min-width: 50px;
+    min-height: 50px;
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
     border-radius: 50%;
-    font-size: 32px;
-    line-height: 44px;
+    font-size: 28px;
     cursor: pointer;
-    z-index: 100000; /* 이미지보다 위에 떠 있도록 설정 */
-    transition: background 0.2s, transform 0.2s;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 1000000;
+    box-sizing: border-box;
+    padding: 0;
+    line-height: 1;
 }
 
+/* X 버튼에 마우스 올렸을 때 효과 */
 .am-viewer-close:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: #000000;
+    color: #ffffff;
     transform: scale(1.05);
-}
-
-/* 뷰어가 켜졌을 때 메인 본문 페이지가 멋대로 스크롤되는 것을 방지 */
-body.viewer-open {
-    overflow: hidden !important;
 }
