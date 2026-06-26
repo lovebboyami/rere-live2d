@@ -1,21 +1,25 @@
      
-    function openGallery(images){
-        const box=document.getElementById('galleryImageList');
-        box.innerHTML='';
+function openGallery(images){
+    const box=document.getElementById('galleryImageList');
+    const modal=document.getElementById('galleryModal');
 
-        images.forEach(src=>{
-            const img=document.createElement('img');
-            img.src=src;
-            box.appendChild(img);
-        });
+    box.innerHTML='';
 
-        document.getElementById('galleryModal').classList.add('active');
-        document.querySelector('.modal-content').scrollTop=0;
-    }
-    
-        function closeGallery() {
-            document.getElementById('galleryModal').classList.remove('active');
-        }
+    images.forEach(src=>{
+        const img=document.createElement('img');
+        img.src=src;
+        box.appendChild(img);
+    });
+
+    modal.classList.add('active');
+    box.parentElement.scrollTop=0;
+    document.body.style.overflow='hidden';
+}
+
+function closeGallery(){
+    document.getElementById('galleryModal').classList.remove('active');
+    document.body.style.overflow='';
+}
     
     // 리깅 작가 선택 토글
     function toggleRigging(card) {
@@ -132,6 +136,7 @@
         calc();
     }
 
+    
     
     // 초기 계산 실행
     calc();
