@@ -99,9 +99,15 @@
     // 양식 복사
     function copyForm() {
         const text = document.getElementById('preview-area').innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("신청 양식이 복사되었습니다. 문의 시 붙여넣기 해주세요!");
-        });
+
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                alert("복사 성공");
+            })
+            .catch(err => {
+                console.error(err);
+                alert("복사 실패");
+            });
     }
 
     // 초기화
