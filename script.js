@@ -148,15 +148,15 @@ function fallbackCopy(text) {
     // 초기 계산 실행
     calc();
 
-function openViewer(element) {
+function openViewer(element){
 
-    const oldViewer = document.querySelector('.inline-viewer');
+    const oldViewer=document.querySelector('.inline-viewer');
 
     if(oldViewer){
-        const oldCard = oldViewer.dataset.cardIndex;
-        const nowCard = [...element.closest('.gallery-grid').querySelectorAll('.card')].indexOf(element.closest('.card'));
+        const oldCard=oldViewer.dataset.cardIndex;
+        const nowCard=[...element.closest('.gallery-grid').querySelectorAll('.card')].indexOf(element.closest('.card'));
 
-        if(oldCard == nowCard){
+        if(oldCard==nowCard){
             oldViewer.remove();
             return;
         }
@@ -164,29 +164,113 @@ function openViewer(element) {
         oldViewer.remove();
     }
 
-    const images = element.dataset.images.split(',');
+    const images=element.dataset.images.split(',');
+    const items=(element.dataset.items||'').split('|');
 
-    const viewer = document.createElement('div');
-    viewer.className = 'inline-viewer';
-    viewer.dataset.cardIndex = [...element.closest('.gallery-grid').querySelectorAll('.card')].indexOf(element.closest('.card'));
+    let current=0;
 
-    const close = document.createElement('button');
-    close.className = 'inline-close';
-    close.innerHTML = '×';
-    close.onclick = () => viewer.remove();
+    const viewer=document.createElement('div');
+    viewer.className='inline-viewer';
+    viewer.dataset.cardIndex=[...element.closest('.gallery-grid').querySelectorAll('.card')].indexOf(element.closest('.card'));
 
-    viewer.appendChild(close);
+    const close=document.createElement('button');
+    close.className='inline-close';
+    close.innerHTML='×';
+    close.onclick=()=>viewer.remove();
 
-    images.forEach(src=>{
-        const img=document.createElement('img');
-        img.src=src.trim();
-        viewer.appendChild(img);
+    const main=document.createElement('img');
+    main.className='viewer-main';
+
+    const nav=document.createElement('div');
+    nav.className='viewer-nav';
+
+    const prev=document.createElement('button');
+    prev.className='viewer-btn';
+    prev.innerHTML='‹';
+
+    const next=document.createElement('button');
+    next.className='viewer-btn';
+    next.innerHTML='›';
+
+    const info=document.createElement('div');
+    info.className='viewer-items';
+
+    if(items.length && items[0].trim()!==""){
+        info.innerHTML='<h4>구성품</h4>'+items.map(item=>'<div>• '+item+'</div>').join('');
+    }
+
+    const thumbs=document.createElement('div');
+    thumbs.className='viewer-thumbs';
+
+    function render(){
+
+        main.src=images[current].trim();
+
+        thumbs.querySelectorAll('img').forEach((img,i)=>{
+            img.classList.toggle('active',i===current);
+        });
+
+        requestAnimationFrame(()=>{
+            viewer.scrollIntoView({
+                behavior:'smooth',
+                block:'start'
+            });
+        });
+
+    }
+
+    images.forEach((src,index)=>{
+
+        const thumb=document.createElement('img');
+
+        thumb.src=src.trim();
+
+        thumb.onclick=()=>{
+
+            current=index;
+
+            render();
+
+        };
+
+        thumbs.appendChild(thumb);
+
     });
 
-    const grid = element.closest('.gallery-grid');
-    const cards = [...grid.querySelectorAll('.card')];
-    const index = cards.indexOf(element.closest('.card'));
-    const column = window.innerWidth <= 768 ? 1 : 3;
-    const insertTarget = cards[Math.min(index - (index % column) + (column - 1), cards.length - 1)];
+    prev.onclick=()=>{
+
+        current=(current-1+images.length)%images.length;
+
+        render();
+
+    };
+
+    next.onclick=()=>{
+
+        current=(current+1)%images.length;
+
+        render();
+
+    };
+
+    nav.append(prev,next);
+
+    viewer.append(close);
+
+    if(items.length && items[0].trim()!==""){
+        viewer.append(info);
+    }
+
+    viewer.append(main,nav,thumbs);
+
+    render();
+
+    const grid=element.closest('.gallery-grid');
+    const cards=[...grid.querySelectorAll('.card')];
+    const index=cards.indexOf(element.closest('.card'));
+    const column=window.innerWidth<=768?1:3;
+    const insertTarget=cards[Math.min(index-(index%column)+(column-1),cards.length-1)];
+
     insertTarget.after(viewer);
+
 }
