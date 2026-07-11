@@ -63,6 +63,7 @@
     .slot-badge { width: 100%; padding: 8px 0; border-radius: 20px; font-size: 14px; font-weight: 600; }
     .slot-badge.open { background: #e9ecef; color: var(--text-light); }
     .slot-badge.closed { background: var(--point); color: #fff; }
+    .slot-badge.shut { background:#7d8590; color:#fff; }
 
     /* [이벤트] */
         .event-banner{display:flex;align-items:center;gap:14px;padding:18px 24px;background:linear-gradient(90deg,#fff8fa 0%,#ffffff 100%);border:1px solid #ffd6df;border-radius:var(--radius); margin-bottom:12px; }
